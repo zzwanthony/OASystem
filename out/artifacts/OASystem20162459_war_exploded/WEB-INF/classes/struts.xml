@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+    <constant name="struts.custom.i18n.resources" value="message"/>
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <constant name="struts.ui.theme" value="simple"/>
+    <constant name="struts.action.extension" value="action,,"/>
+    <constant name="struts.action.excludePattern" value="/static/.*?"/>
+    <constant name="struts.objectFactory" value="spring"/>
+
+    <package name="user" namespace="/UserLogin" extends="struts-default">
+        <global-results>
+            <result name="error">/error.jsp</result>
+            <result name="toLogin">/jsp/login.jsp</result>
+        </global-results>
+        <action name="toLogin">
+            <result>/jsp/login.jsp</result>
+        </action>
+        <action name="toRegister">
+            <result>/jsp/register.jsp</result>
+        </action>
+        <!-- 登入 -->
+        <action name="login" class="com.ksd.zzw.actions.loginAction" method="login">
+            <result name="success">/jsp/mainPage.jsp</result>
+            <result name="login_input">/jsp/login.jsp</result>
+        </action>
+        <!-- 获取验证码 -->
+        <action name="ValiImage" class="com.ksd.zzw.actions.ImageCode" method="ValiImage">
+            <result name="success" type="stream">
+                <param name="contentType">image/jpeg</param>
+                <param name="inputName">imageStream</param>
+                <param name="bufferSize">2048</param>
+            </result>
+        </action>
+        <!-- 注册 -->
+        <action name="register" class="com.ksd.zzw.actions.RegisterForm" method="register">
+            <result name="success">/jsp/mainPage.jsp</result>
+            <result name="register_Defeat">/jsp/register.jsp</result>
+        </action>
+        <!-- 退出 -->
+        <action name="logout" class="com.ksd.zzw.actions.loginAction" method="logout">
+            <result name="success">/jsp/login.jsp</result>
+        </action>
+
+        <!--修改密码-->
+        <action name="passwordModify" class="com.ksd.zzw.actions.loginAction" method="modifyPW">
+            <result name="success">/jsp/login.jsp</result>
+        </action>
+    </package>
+
+    <package name="administrator" namespace="/UserAdministrator" extends="struts-default">
+
+        <!-- 拦截器设置 -->
+        <interceptors>
+            <!-- 自定义拦截器 -->
+            <interceptor name="myActionFilter" class="com.ksd.zzw.Interceptor.LoggingInterceptor">
+                <!-- 放行方法名为login的方法 -->
+                <param name="excludeMethods">toLogin</param>
+            </interceptor>
+            <!-- 自定义拦截器栈 -->
+            <interceptor-stack name="selfStack">
+                <!-- 必须引用struts-default.xml中的拦截器栈 -->
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+                <!-- 自己的拦截器 -->
+                <interceptor-ref name="myActionFilter"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+        <!-- 配置全局拦截器为 -->
+        <default-interceptor-ref name="selfStack"></default-interceptor-ref>
+
+        <global-results>
+            <result name="error">/error.jsp</result>
+            <result name="toLogin">/jsp/login.jsp</result>
+        </global-results>
+        <action name="adminSelect" class="com.ksd.zzw.actions.PageChoose" method="select">
+            <result name="MainPage">/jsp/mainPage.jsp</result>
+            <result name="Address">/jsp/address/address.jsp</result>
+            <result name="Meeting">/jsp/meeting/meeting.jsp</result>
+            <result name="Notice">/jsp/notice/notice.jsp</result>
+            <result name="Schedule">/jsp/schedule/schedule.jsp</result>
+            <result name="Sms">/jsp/sms/sms.jsp</result>
+            <result name="Worklog">/jsp/worklog/worklog.jsp</result>
+        </action>
+        <!-- address页面 -->
+        <action name="toAddressAdd" class="com.ksd.zzw.actions.AddressAction" method="dealAddress">
+            <result name="toadd">/jsp/address/address_add.jsp</result>
+            <result name="toedit">/jsp/address/address_edit.jsp</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">adminSelect</param>
+                <param name="namespace">/UserAdministrator</param>
+                <param name="select">1</param>
+            </result>
+        </action>
+        <!-- meeting页面 -->
+        <action name="toMeetingAdd" class="com.ksd.zzw.actions.MeetingAction" method="dealMeeting">
+            <result name="toadd">/jsp/meeting/meeting_add.jsp</result>
+            <result name="toedit">/jsp/meeting/meeting_edit.jsp</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">adminSelect</param>
+                <param name="namespace">/UserAdministrator</param>
+                <param name="select">2</param>
+            </result>
+        </action>
+        <!-- notice -->
+        <action name="toNoticeAdd" class="com.ksd.zzw.actions.NoticeAction" method="dealNotice">
+            <result name="toadd">/jsp/notice/notice_add.jsp</result>
+            <result name="toedit">/jsp/notice/notice_edit.jsp</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">adminSelect</param>
+                <param name="namespace">/UserAdministrator</param>
+                <param name="select">3</param>
+            </result>
+        </action>
+        <!-- schedule -->
+        <action name="toScheduleAdd" class="com.ksd.zzw.actions.ScheduleAction" method="dealSchedule">
+            <result name="toadd">/jsp/schedule/schedule_add.jsp</result>
+            <result name="toedit">/jsp/schedule/schedule_edit.jsp</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">adminSelect</param>
+                <param name="namespace">/UserAdministrator</param>
+                <param name="select">4</param>
+            </result>
+        </action>
+        <!-- sms -->
+        <action name="toSmsAdd" class="com.ksd.zzw.actions.SmsAction" method="dealSms">
+            <result name="toadd">/jsp/sms/sms_add.jsp</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">adminSelect</param>
+                <param name="namespace">/UserAdministrator</param>
+                <param name="select">5</param>
+            </result>
+        </action>
+        <!-- worklog -->
+        <action name="toWorklogAdd" class="com.ksd.zzw.actions.WorklogAction" method="dealWorklog">
+            <result name="toadd">/jsp/worklog/worklog_add.jsp</result>
+            <result name="toedit">/jsp/worklog/worklog_edit.jsp</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">adminSelect</param>
+                <param name="namespace">/UserAdministrator</param>
+                <param name="select">6</param>
+            </result>
+        </action>
+    </package>
+
+</struts>

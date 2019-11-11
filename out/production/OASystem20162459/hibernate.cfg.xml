@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <mapping resource="xml/Address.hbm.xml"/>
+        <mapping resource="xml/Meeting.hbm.xml"/>
+        <mapping resource="xml/Notice.hbm.xml"/>
+        <mapping resource="xml/Schedule.hbm.xml"/>
+        <mapping resource="xml/Sms.hbm.xml"/>
+        <mapping resource="xml/User.hbm.xml"/>
+        <mapping resource="xml/Worklog.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>
