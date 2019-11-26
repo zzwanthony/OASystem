@@ -5,6 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * 时间工具类
+ */
 public class UtilTime {
     public static Date FormatTime(String time) {
         String[] t = time.split("T");
