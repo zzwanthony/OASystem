@@ -2,7 +2,6 @@ package com.ksd.zzw.util;
 
 public class UtilPage {
 
-    private int id = 0;
     private static int pageSize = 7;//每页页面大小
     private int currentPageNo = 1;//当前页码
     private int totalCount;//总条数
